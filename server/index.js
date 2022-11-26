@@ -15,14 +15,18 @@ app.use("/api/v1", router)
 // app.get('/', (req, res) => {
 //     res.send('Hello World!')
 //   })
+let OPTION={autoIndex:true}
 
-mongoose.connect("mongodb://127.0.0.1:27017/Profiles", (err) => {
+mongoose.connect("mongodb://127.0.0.1:27017/Profiles",OPTION, (err) => {
     err ? console.log(err)
     :console.log("Server Connected");
 })
 
 app.listen(8080, (err) => {
-    err?console.log("Serber Error"):
+    err?console.log("Server Error"):
     console.log("Server is running on 8080 port");    
 
 })
+
+
+module.exports=app
