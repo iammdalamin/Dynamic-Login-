@@ -4,7 +4,7 @@ const  jwt  = require("jsonwebtoken");
 module.exports = (req, res, next) => {
     let token = req.headers["token"]
 
-    jwt.verify(token, "password123", (err, decoded) => {
+    jwt.verify(token, "JWT_VERIFY_PASSWORD", (err, decoded) => {
         if (err) {
             res.status(401).json({
                 status: "Unauthorized Request",
@@ -14,8 +14,11 @@ module.exports = (req, res, next) => {
         } else {
             let email = decoded['data']['email'];
             req.headers.email = email;
+            console.log(email)
             next()
         }
             
     })
 }
+
+

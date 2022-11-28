@@ -2,6 +2,8 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 const cors = require("cors")
+const bcrypt = require("bcrypt")
+const dotenv = require("dotenv")
 const mongoose = require("mongoose")
 const router = require("./src/routers/api.js")
 
@@ -9,15 +11,19 @@ const app = new  express()
 
 app.use(bodyParser.json())
 app.use(cors())
-
+dotenv.config()
 
 app.use("/api/v1", router)
 // app.get('/', (req, res) => {
 //     res.send('Hello World!')
 //   })
-let OPTION={autoIndex:true}
+let OPTION = {
+    autoIndex: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    }
 
-mongoose.connect("mongodb://127.0.0.1:27017/Profiles",OPTION, (err) => {
+mongoose.connect("mongodb://127.0.0.1:27017/Profiles",OPTION,  (err) => {
     err ? console.log(err)
     :console.log("Server Connected");
 })
