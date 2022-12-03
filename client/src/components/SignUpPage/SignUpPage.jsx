@@ -18,9 +18,6 @@ const SignUpPage = () => {
     });
   };
 
-  // const URL = "http://localhost:8080/api/v1/signup";
-  // const data = { user };
-
   const postDataObj = async (e) => {
     e.preventDefault();
 
@@ -38,28 +35,13 @@ const SignUpPage = () => {
       }),
     });
     const data = await res.json();
-    if (data.status === 400 || !data) {
-      window.alert("Registration Failed");
+    if (res.status === 400) {
+      window.alert(data.status);
     } else {
-      window.alert("Registration Succesfull");
+      window.alert(data.status);
       history("/login");
     }
   };
-  // const postData = async (
-  //   URL = "http://localhost:8080/api/v1/signup",
-  //   data = { user }
-  // ) => {
-  //   const res = await fetch(URL, {
-  //     method: "POST",
-  //     mode: "cors",
-  //     cache: "no-cache",
-  //     headers: {
-  //       "Content-Type": "aplication/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //   });
-  // };
-  // console.log(user);
   return (
     <>
       <div className="card">

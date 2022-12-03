@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
+import { UserContext } from "../../context/context-api";
 import "./LoginPage.css";
 const LoginPage = () => {
   let history = useNavigate();
+
+  const [state, setState] = useContext(UserContext);
 
   const [user, setUser] = useState({
     email: "",
@@ -32,12 +35,22 @@ const LoginPage = () => {
         password,
       }),
     });
+
     const data = await res.json();
+
+    setState({
+      user: data.data,
+      token: data.token,
+    });
+
+    window.localStorage.setItem("Auth", JSON.stringify(data));
+
+    console.log(data.data);
     if (res.status === 400 || res.status === 401 || !data) {
       window.alert(data.status);
     } else {
       window.alert(data.status);
-      history("/dashboard");
+      history("/");
     }
   };
 
@@ -63,6 +76,10 @@ const LoginPage = () => {
         />
         <button type="submit">Login</button>
       </form>
+
+      <p>
+        If you have no accoutn, <a href="/signup"> Sign Up Now</a>
+      </p>
     </div>
   );
 };

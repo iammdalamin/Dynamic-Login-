@@ -13,7 +13,7 @@ exports.SignUp = async(req, res) => {
         const userExist = await UserModel.findOne({ email: email })
         if (userExist) {
             res.status(400).json({
-                message: "This email is already existing",
+                status: "This email is already existing",
                
             })
         } else {
@@ -40,29 +40,37 @@ exports.Login = async(req, res) => {
     let { email, password } = req.body
   
         if (!email ) {
-            res.status(401).json({
+            res.status(400).json({
                         status:"Please enter Your Email"
                     })
         } else if (!password) {
-            res.status(401).json({
+            res.status(400).json({
                 status:"Please enter Your Password"
             })
         } else {
             UserModel.findOne({ email: email }, async (err, data) => {
                 try {
                     if(!data){
-                        res.status(401).json({
+                        res.status(400).json({
                             status: "Enter your valid email",
                             data:err
                         })
                     }
     
                     const isMatch = await bcrypt.compare(password, data.password)
-                console.log(isMatch)
                 if (!isMatch) {
                     res.status(400).json({ status: "Please enter your valid password" })
                 } else {
-                    res.status(200).json({ status: "Login Successfully" })
+                    let Payload = {
+                                    exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60), data: data
+                                }
+                                let token = jwt.sign(Payload, "JWT_VERIFY_PASSWORD")
+                                res.status(200).json({
+                                    status: "Login Successfull",
+                                    token: token,
+                                    data:data
+                                })
+                    
             
                 }
                 } catch(err) {
